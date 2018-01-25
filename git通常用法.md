@@ -1,3 +1,4 @@
+
 ### Git通常用法 [Git文档](http://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并)
 
 ##### 提交
@@ -5,10 +6,17 @@
  - `git add filename` 把文件添加到暂存区
  - `git add .` 把所有文件提交到暂存区
  - `git add -u`把所有文件添加到暂存区，并将删除文件从仓库中删除
+ - `git add dir/*` 把目录dir下的所有文件提交到暂存区
  - `git commit -m "信息"` 提交修改文件及修改信息
  - `git commit --amend -m "message"` 重置上一次提交信息
  - `git push` 将暂存区内容提交到远程库
  - `git push origin branchname` 提交到指定分支
+ ###### `只提交部分文件`
+ 		1.git status
+ 		2.git add filepath
+ 		3.git stash -u -k 隐去其它变化
+ 		4.git status, git commit
+ 		5.git stash pop 恢复其它变化
  
  ---
 ##### 查看提交历史
@@ -18,15 +26,19 @@
 - `git log --author=张鹏` 查看张鹏的提交历史
 - `git log --graph` 查看分支合并图
 - `git log -p <file>` 查看指定文件的提交历史
+- `git reflog`  查看本地所有的操作, 包括rebase 之后被清除了的commit
 - `git blame <file>` 以列表方式查看指定文件提交历史
 - `git log --stat` 查看提交了哪些文件
 - `git log --patch` 查看提交了哪些更改的内容
 - `git log --graph --all --decorate --oneline`
 - `git log -p` 查看每次提交的内容差异
-- `git show 4ebd4bbc3ed321d01484a4ed206f18ce2ebde5ca` 查看某历史版本的提交内容
+- `git log --before={2014-01-01} --after={2014-02-01}` 查看从2月1号 到1月1号 的提交
+- `git log --before={3.weeks.ago}` 查看3周前到现在的提交
+- `git show 哈希值` 查看某历史版本的提交内容
 - `git show HEAD^`查看上一次提交
 - `git show HEAD~3`查看往前三次的提交
 - `git log dev..ZP`查看ZP中哪些没被提交到dev上
+
 
 ---
 ###### `查看图形界面`
@@ -41,6 +53,7 @@
 - `git tag -l`按字母表顺序查看标签
 - `git tag -d v2.0`删除标签
 - `git  checkout v0.21` 此时会指向打v0.21标签时的代码状态
+- `git checkout -b new v1.0` 创建分支new,将1.0的代码拉过去
 - `git push origin --delete tag <tagname>`删除远程tag
 - `git tag -d <tagname>` 删除本地tag
 
@@ -55,6 +68,8 @@
 - `git branch -a`查看本地和远程分支
 - `git branch -r`查看远程分支
 - `git branch -d`删除本地分支
+- `git branch -m oldname newname`本地分支重命名
+- `git remote rename oldname newname`重命名远程仓库
 - `git chectout <branch>`切换到指定分支
 - `git merge <branch>` 合并指定分支到当前分支
 
@@ -65,7 +80,7 @@
 - `git push origin :name` 删除远程分支 推送一个空分支到远程
 - `git push origin --delete <branchName>` 删除远程分支
 - `git branch -r -d origin/branch-name`删除远程分支
--  `git branch --set-upstream [branch] [remote-branch]`建立追踪关系，在现有分支与指定的远程分支之间
+- `git branch --set-upstream [branch] [remote-branch]`建立追踪关系，在现有分支与指定的远程分支之间
 
 ##### 合并
 - `git pull --rebase origin dev` 拉取所有上游提交命令到小红的本地仓库，并尝试和她的本地修改合并 
@@ -84,7 +99,7 @@
 - `git stash list` 查看stash队列 
 - `git stash drop stash@{0}` 删除编号为0 的进度
 - `git stash pop stash@{0}` 恢复编号为0的进度的工
-作区和暂存区, list 中无
+作区和暂存区, list 中无, 有冲突时在list中不会消失
 -  `git stash apply` 恢复工作, list中还有
 - `git stash clear`清除所有进度<工作现场>
 
@@ -92,6 +107,7 @@
 - `git diff ZP..origin/ZP` 查看本地分支和远程分支的区别
 - `git diff`查看暂存前后的变化
 - `git diff --cached`查看已暂存起来的变化
+- `git diff 哈希值 filename` 查看某次提交某个文件的修改
 
 
 #### 撤消
@@ -102,37 +118,43 @@
 - `git reset --hard HEAD~3`放弃本地所有修改，回退到指定版本
 - `git reset HEAD`撤消加入暂存，即取消add
 
+#### 查责
+- `git blame filename` 列出文件中每一行的变更时间与作者
+- `将new 分支的修改应用到 new2分支上`
+
+		1. new 分支上完成 add . 及 commit, 查看log,复制 commit哈希值
+		2. 切换到new2分支
+		3. `git cherry-pick 哈希值` 
+
+		
 
 #### 修改命令
 - `git config --global alias.co checkout`
 - `git config --global alias.ci commit`
 - `git config --global alias.sta status` 命令别名
+- `git config apply.whitespace nowarn` 忽略空格的改变
 
-### 流程
-  
-  方案 1.
----
-  1. 切换到dev `git pull origin dev`更新dev中的代码
-  2. 切换到 自己branch 进行开发，提交修改 , 合并到dev 解决冲突
-  3. 整个版本开发完成后,切换到master,
-  4. `git merge dev` 将dev 合并到了master
-  
-  方案 2.
----
-   0. 分别测试下 push 和不push的情况
-   1. chectout 当前分支, git fetch origin dev
-   2. git rebase origin/dev
-   3. 如果有冲突 解决之， git add . ,git rebase --continue
-   3. git push  
-   4.   git merge --no-ff feature-branch 试试
-  
-  
-  方案 3.
----
-   1. 自己分支add , commit ,push
-   2. dev, pull --rebase
-   3. merge 自己分支
-   3. git push  
+## 流程
+
+- 方案1 所有人在一个分支时
+
+		  1. add . commit 
+		  2. pull --rebase
+		  3. 解决冲突
+		  4. push  
+
+- 方案2 每人一个分支时,  不推荐
+
+		  1. 在各自分支 add . commit 
+		  2. 切换到dev, pull --rebase
+		  3. 解决冲突
+		  4. merge 本人分支
+		  5. push  
+		  6. 保证自己分支每天的代码是dev最新的
+## 项目迁移
+
+- cd 到项目目录下,  cd .git/  更改 conf 中的 ip 或 url
+- push 到新的仓库
 
   
    
@@ -158,42 +180,22 @@
 
 ####常见问题
 
- 1. 项目中有些配置文件在服务器上做了修改 ,本地又添加了些修改，再次push ,pull ,checkout 的时候可能会出错
-             
-        error: Your local changes to the following files would be overwritten by merge:protected/config/main.php
-        
-        Please, commit your changes or stash them before you can merge.
-        
-    `解决方案`
-   
-        如果希望保留生产服务器上所做的改动,仅仅并入新配置项, 处理方法如下:
-
-        git stash
-	    git pull
-		git stash pop
-		然后可以使用git diff -w +文件名 来确认代码自动合并的情况.
-
-		反过来,如果希望用代码库中的文件完全覆盖本地工作版本. 方法如下:
-
-		git reset --hard
-		git pull
     
- 2. 放弃跟踪项目中的文件
+ 1. 放弃跟踪项目中的文件
  
  	  	 gitignore只能忽略那些原来没有被track的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore是无效的。
         正确的做法是在每个clone下来的仓库中手动设置不要检查特定文件的更改情况。
         
    		 git update-index --assume-unchanged PATH    在PATH处输入要忽略的文件
+   		 
+   		 
+   		 git rm -r --cached .
+		 git add .
+		 git commit -m 'update .gitignore'
+   		 	
+   		 
+   		touch .gitignore //创建
+   		open .gitignore //打开
  	
 
-3. Xcode项目中的某些文件解读 [项目文件](http://blog.csdn.net/lixing333/article/details/47700687)
-
-4. 分叉
-            
-        Your branch and 'origin/ZP' have diverged,
-		and have 2 and 4 different commits each, respectively.
-		  (use "git pull" to merge the remote branch into yours)
-		nothing to commit, working directory clean
-	`解决方案`
-		1. git cherry  git pull --rebase origin <自己分支或Dev>
-		2. git add .  git rebase --continue
+2. Xcode项目中的某些文件解读 [项目文件](http://blog.csdn.net/lixing333/article/details/47700687)
