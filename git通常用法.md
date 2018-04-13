@@ -126,7 +126,22 @@
 		2. 切换到new2分支
 		3. `git cherry-pick 哈希值` 
 
+#### 子模块
+- 	clone 项目
 		
+		1. git clone 包含子模块的项目HEAD detached at b1067fb, 默认包含子模块目录, 但是空目录
+		2. cd 主目录,  git submodule init 初使化本地配置文件
+		3. git submodule update 抓取子模块的数据，并检出子模块最后的提交
+
+-  拉取代码
+
+		1. 进入子模块目录,  git pull origin master <--rebase 选填>  拉取代码
+		2. 返回主目录, git diff --submodule 查看子模块被更新后的结果，是否冲突
+		
+-  流程
+		
+		1. 先更新子模块代码，提交, push 
+		2. 再更新主项目
 
 #### 修改命令
 - `git config --global alias.co checkout`
