@@ -22,6 +22,7 @@
 ##### 查看提交历史
 
 - `git log` 查看提交历史
+- `git log --reverse` 从第一次提交开始
 - `git log --oneline` 查看简洁的提交记录
 - `git log --author=张鹏` 查看张鹏的提交历史
 - `git log --graph` 查看分支合并图
