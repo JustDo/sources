@@ -1,5 +1,6 @@
 
-### Git通常用法 [Git文档](http://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并)
+### Git通常用法 [Git文档](http://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并)   
+[git可视化游戏](https://learngitbranching.js.org/)
 
 ##### 提交
  - cd 到当前要提交的文件路径<即文件夹下>
@@ -206,6 +207,7 @@
    		 
    		 
    		 git rm -r --cached .
+   		 <添加 忽略内容到.ignore>
 		 git add .
 		 git commit -m 'update .gitignore'
    		 	
