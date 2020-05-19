@@ -214,6 +214,10 @@
    		 
    		touch .gitignore //创建
    		open .gitignore //打开
+   		
+ 2. 第二种方法
+
+ 		cd 进入到根目录 .git/info 中, vi exclude文件, 直接把要忽略的内容添加进去
  	
 
-2. Xcode项目中的某些文件解读 [项目文件](http://blog.csdn.net/lixing333/article/details/47700687)
+
