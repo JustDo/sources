@@ -120,7 +120,8 @@
 
 #### 撤消
 
-- `git checkout -- filename`取消对文件的修改
+- `git checkout -- filename`取消对文件的修改, 清除已跟踪的变更
+- `git clean -f -d` 清除所有未跟踪的变更，即: 清除新添加文件
 - `git reset --hard` 取消上一步更新
 - `git reset --hard 哈希值`回退到指定版本-
 - `git reset --hard HEAD^`放弃本地所有修改，回退到上一个版本
@@ -179,7 +180,7 @@
 
   <font size=2 color='red'>在主项目中未修改子模块代码, 不必提交子模块, 其它引用子模块的项目也不必更新子模块</font>
 
-- 删除子模块
+- 删除子模块: 第一种方式
 
       1. rm -rf 子模块目录 删除子模块目录及源码
       2. vi .gitmodules 删除项目目录下.gitmodules文件中子模块相关条目
@@ -191,6 +192,12 @@
             git rm --cached 子模块名称
 
             完成删除后，提交到仓库即可
+
+- 删除子模块: 第二种方式
+
+      1. cd 到main中，git submodule deinit 子模块目录名称
+      2. git rm 子模块目录名称
+      3. git add , commit ,push
 
 - 子模块其它命令
 
