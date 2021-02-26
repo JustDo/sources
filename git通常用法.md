@@ -14,14 +14,6 @@
 - `git push` 将暂存区内容提交到远程库
 - `git push origin branchname` 提交到指定分支
 
-###### `只提交部分文件`
-
-1.git status
-2.git add filepath
-3.git stash -u -k 隐去其它变化
-4.git status, git commit
-5.git stash pop 恢复其它变化
-
 ---
 
 ##### 查看提交历史
@@ -61,6 +53,7 @@
 - `git tag -d v2.0`删除标签
 - `git checkout v0.21` 此时会指向打 v0.21 标签时的代码状态
 - `git checkout -b new v1.0` 创建分支 new,将 1.0 的代码拉过去
+- `git checkout -b pre origin/pre` 拉取远程特定分支 origin/pre 到本地分支 pre 上
 - `git push origin --delete tag <tagname>`删除远程 tag
 - `git tag -d <tagname>` 删除本地 tag
 
@@ -107,9 +100,29 @@
 - `git stash list` 查看 stash 队列
 - `git stash drop stash@{0}` 删除编号为 0 的进度
 - `git stash pop stash@{0}` 恢复编号为 0 的进度的工
-  作区和暂存区, list 中无, 有冲突时在 list 中不会消失
+  作区和暂存区, list 中删除, 有冲突时在 list 中不会消失
 - `git stash apply` 恢复工作, list 中还有
 - `git stash clear`清除所有进度<工作现场>
+
+##### 提交部分文件
+
+方法一
+
+- `git add demo.html` 提交到暂存区
+- `git stash -u -k` 忽略其他修改，关键一步
+- `git commit -m` '修改演示文件'
+- `git pull`
+- `git push`
+- `git stash pop` // 恢复之前忽略的文件（非常重要的一步）
+
+方法二
+
+- `git add demo.html` 提交到暂存区
+- `git commit -m` '修改演示文件'
+- `git stash` 暂存
+- `git pull`
+- `git push`
+- `git stash pop` // 恢复之前忽略的文件（非常重要的一步）
 
 ##### 区别
 
