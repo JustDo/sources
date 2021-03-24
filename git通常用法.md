@@ -14,6 +14,11 @@
 - `git push` 将暂存区内容提交到远程库
 - `git push origin branchname` 提交到指定分支
 
+- `关于git commit --amend` 如果上次 commit 以后，有忘记提交的文件，可以如下操作，这样两次 add 的内容就保存在一个 commit 中了
+
+      1. git add file
+      2. git commit --amend -m ""
+
 ---
 
 ##### 查看提交历史
@@ -136,10 +141,12 @@
 - `git checkout -- filename`取消对文件的修改, 清除已跟踪的变更
 - `git clean -f -d` 清除所有未跟踪的变更，即: 清除新添加文件
 - `git reset --hard` 取消上一步更新
-- `git reset --hard 哈希值`回退到指定版本-
+- `git reset --hard 哈希值`回退到指定版本, 此时状态: 此 hash 之后的 commit 消失, 所做修改全部无效
 - `git reset --hard HEAD^`放弃本地所有修改，回退到上一个版本
 - `git reset --hard HEAD~3`放弃本地所有修改，回退到指定版本
-- `git reset HEAD`撤消加入暂存，即取消 add
+- `git reset --soft 哈希值`回退到指定版本, 此时状态: 此前修改的文件已 add , 但未 commit
+- `git reset hash`撤消 commit，此时状态: 取消 add, 直接回到红色状态, 已修改的内容还在
+- `git reset filepath`只能在 add 之后操作，可以回退到 add 之前 ， 如果已经 commit, 此命令无效
 
 #### 查责
 
