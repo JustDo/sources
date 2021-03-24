@@ -1,9 +1,11 @@
 ### Git 通常用法 [Git 文档](http://git-scm.com/book/zh/v2/Git-分支-分支的新建与合并)
 
 [git 可视化游戏](https://learngitbranching.js.org/)
+`vim ~/.gitconfig` Git 全局配置
 
 ##### 提交
 
+- `git add -i` [交互式暂存](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%9A%82%E5%AD%98)
 - cd 到当前要提交的文件路径<即文件夹下>
 - `git add filename` 把文件添加到暂存区
 - `git add .` 把所有文件提交到暂存区
