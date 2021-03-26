@@ -89,6 +89,22 @@
 - `git branch -r -d origin/branch-name`删除远程分支
 - `git branch --set-upstream [branch] [remote-branch]`建立追踪关系，在现有分支与指定的远程分支之间
 
+##### rebase 对某一段线性 commit 进行编辑，删除，复制，粘贴
+
+- `git rebase -i A^..B` 交互式合并多次提交
+- `git rebase -i HEAD~3` 重写最后三次的提交
+- `git rebase -i [startPoint] [endPoint]` 不包含 startPoint, 如需包含, 参照 A^..B 或 A^ B
+
+      1. 自动打开编辑器, 列出三个 commit , 将第一条 pick 修改为 edit, 其它改为 s
+      2. 如果选择 `git rebase --continue` , 进入编辑器， 三次commit msg 上加上西郊合并需要写的msg
+      3. 如果选择 ` git commit --amend -m "msg"` 直接修改合并信息，其它三个commit 去除
+
+- `git rebase [startpoint] [endpoint] --onto [targetBranch]` 将其它分支区间内的 commit 复制到指定分支
+
+      如果 HEAD 不在target分支
+      1. `git checkout targetBranch` 切换到指定分支
+      2. `git reset --hard [endpoint]`
+
 ##### 合并
 
 - `git pull --rebase origin dev` 拉取所有上游提交命令到小红的本地仓库，并尝试和她的本地修改合并
@@ -159,7 +175,7 @@
       2. 切换到new2分支
       3. `git cherry-pick 哈希值A` 将new分支上的 A 应用到 new2分支上
 
-         `git cherry-pick A^..B`  将new分支上的 A到B的连续commit 应用到 new2分支上
+         `git cherry-pick A^..B`  将new分支上的 A到B的连续commit 应用到 new2分支上 <包含A,B>
 
          `git cherry-pick A B C`  将new分支上的A,B,C 应用到new2分支上<随意的三个commit,不要求连续>
 
