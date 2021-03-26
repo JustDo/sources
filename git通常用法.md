@@ -95,7 +95,7 @@
 - `git rebase -i HEAD~3` 重写最后三次的提交
 - `git rebase -i [startPoint] [endPoint]` 不包含 startPoint, 如需包含, 参照 A^..B 或 A^ B
 
-      1. 自动打开编辑器, 列出三个 commit , 将第一条 pick 修改为 edit, 其它改为 s
+      1. 自动打开编辑器, 列出三个 commit , 将第一条 pick 修改为 edit/pick, 其它改为 s, wq退出
       2. 如果选择 `git rebase --continue` , 进入编辑器， 三次commit msg 上加上西郊合并需要写的msg
       3. 如果选择 ` git commit --amend -m "msg"` 直接修改合并信息，其它三个commit 去除
 
@@ -116,7 +116,7 @@
 
           如果衍合发生冲突，会自动暂停,解决冲突后 git add,  git rebase --continue即可
 
-##### 中途中断
+##### 暂存
 
 - `git stash` 保存工作现场， 就可直接切换到其它分支
 - `git stash save "message"` 备注保存进度的信息
@@ -126,6 +126,19 @@
   作区和暂存区, list 中删除, 有冲突时在 list 中不会消失
 - `git stash apply` 恢复工作, list 中还有
 - `git stash clear`清除所有进度<工作现场>
+
+##### Bisect 二分查找
+
+1. `git bisect start [近期commit] [久远commit]` 在两个 commit 区间内启动查错
+2. 刷新页面，如果正常, 未出现所要找的 bug, 则执行 `git bisect good`, 二分指针 向 > 1/2 的 commit 运动
+   如果出现所要找的异常 bug 情况， 则执行 `git bisect bad` , 二分指针 向 < 1/2 的 commit 运动
+
+   `7dfc49a42 is the first bad commit`
+   这里就是出现问题的的第一次 commit
+
+3. 检查代码,找出错误原因，然后 `git bisect reset`, 退出查错, 回到最近的 commit
+
+   刷新页面后，未出现 bug ， 执行 'good'
 
 ##### 提交部分文件
 
