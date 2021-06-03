@@ -42,7 +42,9 @@
 - `git show 哈希值` 查看某历史版本的提交内容
 - `git show HEAD^`查看上一次提交
 - `git show HEAD~3`查看往前三次的提交
-- `git log dev..ZP`查看 ZP 中哪些没被提交到 dev 上
+- `git log dev..ZP`查看 ZP 中比 dev 多了哪些提交
+- `git log master ^dev` 查看 master 中有，而 dev 中没有的内容
+- `git log dev...master` 不知道誰的提交多，誰的少，只是想知道有哪些不同
 
 ---
 
@@ -55,6 +57,8 @@
 ##### 标签 tag
 
 - `git tag v2.0` 创建标签
+- `git tag v1.0 commitId` 在某个 commitId 的基础上创建 tag
+- `git tag -a v1.0 -m "创建tag" commitId` 在某个 commitId 的基础上创建 tag, 并添加注释
 - `git tag` 查看标签
 - `git tag -l`按字母表顺序查看标签
 - `git tag -d v2.0`删除标签
@@ -78,6 +82,7 @@
 - `git branch -m oldname newname`本地分支重命名
 - `git remote rename oldname newname`重命名远程仓库
 - `git chectout <branch>`切换到指定分支
+- `git checkout -` 切换到上一个分支
 - `git merge <branch>` 合并指定分支到当前分支
 
 - `git branch name` 创建新分支
@@ -91,13 +96,15 @@
 
 ##### rebase 对某一段线性 commit 进行编辑，删除，复制，粘贴
 
-- `git rebase -i A^..B` 交互式合并多次提交
+- `git rebase -i A^..B` 交互式合并多次连续提交
 - `git rebase -i HEAD~3` 重写最后三次的提交
-- `git rebase -i [startPoint] [endPoint]` 不包含 startPoint, 如需包含, 参照 A^..B 或 A^ B
+- `git rebase -i [startPoint] [endPoint]` 不包含 startPoint, 如需包含, A^ B
 
       1. 自动打开编辑器, 列出三个 commit , 将第一条 pick 修改为 edit/pick, 其它改为 s, wq退出
       2. 如果选择 `git rebase --continue` , 进入编辑器， 三次commit msg 上加上西郊合并需要写的msg
       3. 如果选择 ` git commit --amend -m "msg"` 直接修改合并信息，其它三个commit 去除
+
+      注意: 如果是想把某一次commit 删除, 直接在交互当中删除或改为drop 并保存 wq 即可
 
 - `git rebase [startpoint] [endpoint] --onto [targetBranch]` 将其它分支区间内的 commit 复制到指定分支
 
@@ -126,6 +133,7 @@
   作区和暂存区, list 中删除, 有冲突时在 list 中不会消失
 - `git stash apply` 恢复工作, list 中还有
 - `git stash clear`清除所有进度<工作现场>
+- `git stash -u` 将所有修改缓存, 包括 add 文件
 
 ##### Bisect 二分查找
 
