@@ -65,6 +65,7 @@
 - `git checkout v0.21` 此时会指向打 v0.21 标签时的代码状态
 - `git checkout -b new v1.0` 创建分支 new,将 1.0 的代码拉过去
 - `git checkout -b pre origin/pre` 拉取远程特定分支 origin/pre 到本地分支 pre 上
+- `git checkout --orphan branchname` 基于当前分支创建新分支，且新分支上没有当前分支的 commit log
 - `git push origin --delete tag <tagname>`删除远程 tag
 - `git tag -d <tagname>` 删除本地 tag
 
@@ -268,12 +269,13 @@
       1. 先更新/提交子模块代码，提交, push
       2. 再更新主项目
 
-#### 修改命令
+#### git 配置
 
 - `git config --global alias.co checkout`
 - `git config --global alias.ci commit`
 - `git config --global alias.sta status` 命令别名
 - `git config apply.whitespace nowarn` 忽略空格的改变
+- `git config --global credential.helper store` 永久存储密码, 避免每次都重新输入账号密码
 
 ## 流程
 
@@ -298,6 +300,32 @@
 - cd 到项目目录下, cd .git/ 更改 conf 中的 ip 或 url
 - push 到新的仓库
 
+`如何让新仓库不包含原仓库的commit`
+
+- 1.从最全代码分支，切换出新的分支, 新分支不包含任何原来的 commit
+
+  `git checkout --orphan branchname`
+
+- 2.缓存所有文件（除了.gitignore 中声明排除的）
+
+  `git add -A`
+
+- 3.提交跟踪过的文件（Commit the changes）
+
+  `git commit -am "commit message"`
+
+- 4.删除 master 分支（Delete the branch）
+
+  `git branch -D master`
+
+- 5.重命名当前分支为 master（Rename the current branch to master）
+
+  `git branch -m master`
+
+- 6.提交到远程 master 分支 （Finally, force update your repository）
+
+  `git push -f origin master`
+
 #### 注意
 
 - 本机和远程的相同分支使用 rebase。如果是不同分支的合并则必须用 merge，否则会导致历史记录不可读，因为再也找不到合并之前各个分支到底是在哪里[地址](http://www.toobug.net/article/git_and_gitflow.html)
@@ -318,7 +346,7 @@
 
 #### 常见问题
 
-1.  放弃跟踪项目中的文件
+1. 放弃跟踪项目中的文件
 
     gitignore 只能忽略那些原来没有被 track 的文件，如果某些文件已经被纳入了版本管理中，则修改.gitignore 是无效的。
     正确的做法是在每个 clone 下来的仓库中手动设置不要检查特定文件的更改情况。
@@ -335,6 +363,6 @@
         touch .gitignore //创建
         open .gitignore //打开
 
-2.  第二种方法
+2. 第二种方法
 
         cd 进入到根目录 .git/info 中, vi exclude文件, 直接把要忽略的内容添加进去
