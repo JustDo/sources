@@ -1,3 +1,33 @@
-node_modules/
+# OS files
 .DS_Store
-.idea/
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
+jsconfig.json
+
+# Test files
+.nyc_output
+coverage
+
+# App files
+node_modules
+dist
+www
+!www/favicon.ico
+package-lock.json
+.history
