@@ -127,6 +127,7 @@
 ##### 暂存
 
 - `git stash` 保存工作现场， 就可直接切换到其它分支
+- `git stash push -m "暂时保存" filepath` 暂存指定文件
 - `git stash save "message"` 备注保存进度的信息
 - `git stash list` 查看 stash 队列
 - `git stash drop stash@{0}` 删除编号为 0 的进度
