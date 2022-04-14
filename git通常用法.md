@@ -3,6 +3,10 @@
 [git 可视化游戏](https://learngitbranching.js.org/)
 `vim ~/.gitconfig` Git 全局配置
 
+##### 仓库
+
+- `git remote set-url --add origin 新的git地址` 一个项目push到多个git仓库, 这个命令用来添加新地址
+
 ##### 提交
 
 - `git add -i` [交互式暂存](https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E4%BA%A4%E4%BA%92%E5%BC%8F%E6%9A%82%E5%AD%98)
