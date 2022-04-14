@@ -123,6 +123,17 @@
 - `git rebase branchname`衍合某一个分支
 
           如果衍合发生冲突，会自动暂停,解决冲突后 git add,  git rebase --continue即可
+- `git merge 忽略特定文件`
+
+            1. 创建自定义merge driver
+               git config --global merge.ours.driver true
+
+            2. 在要被merge的分支dev根目录上创建.gitattributes文件,在文件里添加需要被忽略的文件
+               demo.js merge=ours
+
+            3. 回到要合并到的分支master,执行merge
+
+            原理: 在 .gitattributes 里可以设置文件的 merge driver, 我们先是添加了一个名叫 ours 的 merge driver, 这个 driver 被设定为 true , 也就是使用这个 merge driver 的文件在 merge 的时候什么都不会做, 也就会保持不变.
 
 ##### 暂存
 
@@ -270,13 +281,19 @@
       1. 先更新/提交子模块代码，提交, push
       2. 再更新主项目
 
-#### git 配置
+#### 修改配置
 
 - `git config --global alias.co checkout`
 - `git config --global alias.ci commit`
 - `git config --global alias.sta status` 命令别名
 - `git config apply.whitespace nowarn` 忽略空格的改变
 - `git config --global credential.helper store` 永久存储密码, 避免每次都重新输入账号密码
+
+- `git config --list` 查看配置列表
+- `git config --global user.name 'name'` 全局配置用户名
+- `git config --global user.email 'email-name'` 全局配置邮箱
+- `git config user.name 'name'` 给某项目单独配置用户名
+- `git config user.email 'email-name'` 给某项目单独配置邮箱
 
 ## 流程
 
@@ -367,3 +384,28 @@
 2. 第二种方法
 
         cd 进入到根目录 .git/info 中, vi exclude文件, 直接把要忽略的内容添加进去
+
+###### [从.git文件夹 恢复仓库文件](https://www.cnblogs.com/xwgli/p/13178843.html)
+
+      1. cd repo.git ; 创建bundle文件
+
+            git bundle create ./reponame.bundle --all
+
+      2. 从bundle文件中clone出代码, 这是文件夹内会出现一个 reponame 文件夹，这个文件夹内就是所有的代码文件
+
+             git clone ./reponame.bundle reponame
+
+      3. 并且还可以恢复其他分支的代码<这是可选操作>
+
+            git clone -b branchname ./reponame.bundle reponame
+
+      4. 新建新的git仓库 名为 newrepo
+
+            git remote rm origin
+
+      5. url.git 为新的git仓库地址
+
+            git remote add origin newrepo.git
+            git push
+
+      6. 如果需要恢复多个分支代码，执行 1,  多次执行 3,4,5; 每次push一个分支以后，删除文件夹，再次 3,4,5
