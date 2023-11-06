@@ -6,6 +6,7 @@
 ##### 仓库
 
 - `git remote set-url --add origin 新的git地址` 一个项目push到多个git仓库, 这个命令用来添加新地址
+- `git remote set-url origin https://新的仓库URL.git` 更改现有远程仓库的地址
 
 ##### 提交
 
@@ -95,7 +96,7 @@
 - `git push origin name` 将本地分支推到远程库中
 - `git branch -d name`删除本地分支
 - `git push origin :name` 删除远程分支 推送一个空分支到远程
-- `git push origin --delete <branchName>` 删除远程分支
+- `git push origin --delete <branchName>` 删除远程分支<可用>
 - `git branch -r -d origin/branch-name`删除远程分支
 - `git branch --set-upstream [branch] [remote-branch]`建立追踪关系，在现有分支与指定的远程分支之间
 
@@ -150,13 +151,13 @@
   作区和暂存区, list 中删除, 有冲突时在 list 中不会消失
 - `git stash apply` 恢复工作, list 中还有
 - `git stash clear`清除所有进度<工作现场>
-- `git stash -u` 将所有修改缓存, 包括 add 文件
+- `git stash save -u "message"` 将所有修改缓存, 包括 add 文件
 
 ##### Bisect 二分查找
 
 1. `git bisect start [近期commit] [久远commit]` 在两个 commit 区间内启动查错
-2. 刷新页面，如果正常, 未出现所要找的 bug, 则执行 `git bisect good`, 二分指针 向 > 1/2 的 commit 运动
-   如果出现所要找的异常 bug 情况， 则执行 `git bisect bad` , 二分指针 向 < 1/2 的 commit 运动
+2. 刷新页面，如果正常, 未出现所要找的 bug, 则执行 `git bisect good`, 二分指针 向 小于 1/2 的 commit 运动
+   如果出现所要找的异常 bug 情况， 则执行 `git bisect bad` , 二分指针 向 大于 1/2 的 commit 运动
 
    `7dfc49a42 is the first bad commit`
    这里就是出现问题的的第一次 commit
@@ -375,8 +376,8 @@
 
          git update-index --assume-unchanged PATH    在PATH处输入要忽略的文件
 
-
-         git rm -r --cached .
+         git rm -r --cached .idea 从当前仓库的索引中移除 .idea 目录及其所有内容，但不会从文件系统中删除这个目录或其内容
+         git rm -r --cached . 从当前仓库的索引中移除所有文件
          <添加 忽略内容到.ignore>
          git add .
          git commit -m 'update .gitignore'
