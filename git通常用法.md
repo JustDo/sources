@@ -3,6 +3,15 @@
 [git 可视化游戏](https://learngitbranching.js.org/)
 `vim ~/.gitconfig` Git 全局配置
 
+##### 终端 GitHub 登录 (gh)
+
+`gh` 是 GitHub 官方提供的命令行工具。安装与登录步骤如下：
+
+```bash
+brew install gh      # 安装 gh
+gh auth login        # 交互式登录 GitHub 账号
+```
+
 ##### 仓库
 
 - `git remote set-url --add origin 新的git地址` 一个项目push到多个git仓库, 这个命令用来添加新地址
@@ -53,6 +62,20 @@
 
 ---
 
+##### patch (补丁)
+
+###### 1. 使用 `git show` 创建补丁 (仅含代码差异)
+
+- **目的**: 快速生成一个只包含代码变动的补丁文件。
+- **创建命令**: `git show <commit_hash> > commit.patch`
+- **应用命令**: `git apply commit.patch` (推荐，`git am` 通常不适用)
+
+###### 2. 使用 `git format-patch` 创建补丁 (包含提交信息)
+
+- **目的**: 生成标准的、可用于邮件或 `git am` 的补丁，包含完整的提交信息（作者、日期、日志等）。
+- **创建命令**: `git format-patch -1 <commit_hash>` (为单个 commit 创建)
+- **应用命令**: `git am < 0001-xxxx.patch` (推荐，`git apply` 也可用)
+
 ###### `查看图形界面`
 
 - `gitk` 查看当前分支历史记录
@@ -90,6 +113,7 @@
 - `git chectout <branch>`切换到指定分支
 - `git checkout -` 切换到上一个分支
 - `git merge <branch>` 合并指定分支到当前分支
+- `git merge --squash <branch>` 将指定分支的多个提交合并成一个新的、未提交的变更，暂存到当前分支。
 
 - `git branch name` 创建新分支
 - `git branch -m 原名 新名` 重命名本地分支
@@ -156,6 +180,7 @@
 ##### Bisect 二分查找
 
 1. `git bisect start [近期commit] [久远commit]` 在两个 commit 区间内启动查错
+1. `git bisect start,git bisect good <commit>,git bisect bad <commit>` 或者连续执行这三个命令, 与上面是一样的
 2. 刷新页面，如果正常, 未出现所要找的 bug, 则执行 `git bisect good`, 二分指针 向 小于 1/2 的 commit 运动
    如果出现所要找的异常 bug 情况， 则执行 `git bisect bad` , 二分指针 向 大于 1/2 的 commit 运动
 
@@ -293,6 +318,7 @@
 - `git config --global alias.sta status` 命令别名
 - `git config apply.whitespace nowarn` 忽略空格的改变
 - `git config --global credential.helper store` 永久存储密码, 避免每次都重新输入账号密码
+- `git config credential.helper store` 针对某一个项目存储 账号，密码，需要先 cd 到项目目录
 
 - `git config --list` 查看配置列表
 - `git config --global user.name 'name'` 全局配置用户名
