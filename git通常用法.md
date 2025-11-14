@@ -11,9 +11,17 @@
 brew install gh      # 安装 gh
 gh auth login        # 交互式登录 GitHub 账号
 gh auth status       # 查看当前登录状态
-gh auth switch       # 切换已登录的账号
 gh auth logout       # 登出当前账号
 gh auth refresh      # 刷新认证令牌
+
+# 切换账号
+gh auth switch                # 切换账号（交互式或自动切换）
+gh auth switch --user 用户名   # 直接切换到指定用户
+
+# gh auth switch 使用说明：
+# - 只有 2 个账号时：自动在两个账号间切换，无需交互
+# - 超过 2 个账号时：显示交互式菜单选择，或使用 --user 指定
+# - 使用 --user 参数：直接切换到指定账号，更快速
 
 # 仓库操作
 gh repo create       # 创建新仓库
