@@ -10,6 +10,29 @@
 ```bash
 brew install gh      # 安装 gh
 gh auth login        # 交互式登录 GitHub 账号
+gh auth status       # 查看当前登录状态
+gh auth switch       # 切换已登录的账号
+gh auth logout       # 登出当前账号
+gh auth refresh      # 刷新认证令牌
+
+# 仓库操作
+gh repo create       # 创建新仓库
+gh repo clone        # 克隆仓库
+gh repo view         # 查看仓库信息
+gh repo list         # 列出用户的仓库
+
+# PR 操作
+gh pr create         # 创建 Pull Request
+gh pr list           # 查看 PR 列表
+gh pr view           # 查看 PR 详情
+gh pr checkout       # 检出 PR 到本地分支
+gh pr merge          # 合并 PR
+
+# Issue 操作
+gh issue create      # 创建 Issue
+gh issue list        # 查看 Issue 列表
+gh issue view        # 查看 Issue 详情
+gh issue close       # 关闭 Issue
 ```
 
 ##### 仓库
@@ -123,6 +146,42 @@ gh auth login        # 交互式登录 GitHub 账号
 - `git push origin --delete <branchName>` 删除远程分支<可用>
 - `git branch -r -d origin/branch-name`删除远程分支
 - `git branch --set-upstream [branch] [remote-branch]`建立追踪关系，在现有分支与指定的远程分支之间
+
+##### worktree 多工作树
+
+`git worktree` 允许在同一个仓库中同时检出多个分支到不同的目录，无需多次克隆仓库。适用于同时处理多个分支或功能的场景。
+
+- `git worktree add <path> <branch>` 创建新的工作树并检出指定分支
+- `git worktree add <path> -b <new-branch>` 创建新分支并在新工作树中检出
+- `git worktree add <path> -b <new-branch> <start-point>` 基于指定 commit/分支创建新分支和工作树
+- `git worktree list` 查看所有工作树列表
+- `git worktree remove <path>` 删除指定路径的工作树
+- `git worktree prune` 清理工作树信息（删除已不存在的工作树记录）
+- `git worktree lock <path>` 锁定工作树，防止被自动清理
+- `git worktree unlock <path>` 解锁工作树
+- `git worktree move <source> <destination>` 移动工作树到新位置
+
+使用场景示例：
+
+```bash
+# 在主项目目录工作，需要紧急修复 bug
+git worktree add ../project-hotfix hotfix-branch
+
+# 同时开发新功能
+git worktree add ../project-feature -b new-feature
+
+# 查看所有工作树
+git worktree list
+
+# 完成后删除工作树
+git worktree remove ../project-hotfix
+```
+
+注意事项：
+
+- 同一个分支不能在多个工作树中同时检出
+- 删除工作树目录后，使用 `git worktree prune` 清理记录
+- 所有工作树共享同一个 `.git` 目录，节省磁盘空间
 
 ##### rebase 对某一段线性 commit 进行编辑，删除，复制，粘贴
 
@@ -335,14 +394,13 @@ gh auth login        # 交互式登录 GitHub 账号
         3. 解决冲突
         4. push
 
-- 方案 2 每人一个分支时, 不推荐
+- 方案 2 每人一个分支时
 
         1. 在各自分支 add . commit
         2. 切换到dev, pull --rebase
         3. 解决冲突
         4. merge 本人分支
         5. push
-        6. 保证自己分支每天的代码是dev最新的
 
 ## 项目迁移
 
